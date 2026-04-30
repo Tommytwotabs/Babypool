@@ -1,0 +1,298 @@
+
+<style>
+  .bp-wrap { max-width: 680px; margin: 0 auto; padding: 1rem 0; font-family: var(--font-sans); }
+  .bp-header { text-align: center; margin-bottom: 1.5rem; }
+  .bp-header h2 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+  .bp-header p { font-size: 14px; color: var(--color-text-secondary); margin: 0; }
+  .bp-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+  .bp-tab { flex: 1; padding: 8px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-secondary); font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .bp-tab.active { background: var(--color-background-info); color: var(--color-text-info); border-color: transparent; font-weight: 500; }
+  .bp-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-col { display: flex; flex-direction: column; gap: 4px; }
+  label { font-size: 13px; color: var(--color-text-secondary); }
+  input, select { width: 100%; box-sizing: border-box; }
+  .submit-btn { width: 100%; padding: 10px; border-radius: var(--border-radius-md); background: var(--color-background-info); color: var(--color-text-info); border: none; font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 8px; }
+  .submit-btn:hover { opacity: 0.9; }
+  .entry-item { border-bottom: 0.5px solid var(--color-border-tertiary); padding: 12px 0; display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 12px; }
+  .entry-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .entry-name { font-weight: 500; font-size: 14px; color: var(--color-text-primary); }
+  .entry-detail { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
+  .entry-date { font-size: 12px; color: var(--color-text-tertiary); text-align: right; }
+  .empty-state { text-align: center; padding: 2rem; color: var(--color-text-secondary); font-size: 14px; }
+  .badge { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 20px; margin-right: 4px; margin-top: 4px; }
+  .badge-pink { background: #FBEAF0; color: #993556; }
+  .badge-blue { background: #E6F1FB; color: #185FA5; }
+  .badge-green { background: #EAF3DE; color: #3B6D11; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-purple { background: #EEEDFE; color: #534AB7; }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
+  .stat-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px; text-align: center; }
+  .stat-num { font-size: 24px; font-weight: 500; color: var(--color-text-primary); }
+  .stat-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .winner-banner { background: var(--color-background-success); border: 0.5px solid var(--color-border-success); border-radius: var(--border-radius-md); padding: 12px 16px; margin-bottom: 1rem; color: var(--color-text-success); font-size: 14px; font-weight: 500; display: none; }
+  .reveal-section { margin-top: 1rem; border-top: 0.5px solid var(--color-border-tertiary); padding-top: 1rem; }
+  .reveal-section h3 { font-size: 15px; font-weight: 500; margin: 0 0 12px; color: var(--color-text-primary); }
+  .reveal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .reveal-input-wrap { display: flex; flex-direction: column; gap: 4px; }
+  .reveal-btn { margin-top: 12px; width: 100%; padding: 9px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-primary); font-size: 14px; cursor: pointer; }
+  .reveal-btn:hover { background: var(--color-background-tertiary); }
+</style>
+
+<div class="bp-wrap">
+  <h2 class="sr-only">Baby pool — submit your guesses for the new arrival</h2>
+  <div class="bp-header">
+    <div style="font-size: 28px; margin-bottom: 8px;">👶</div>
+    <h2>Baby Pool</h2>
+    <p>Enter your guesses for the new arrival!</p>
+  </div>
+
+  <div class="bp-tabs">
+    <button class="bp-tab active" onclick="showTab('guess')">Make a Guess</button>
+    <button class="bp-tab" onclick="showTab('entries')">All Entries</button>
+    <button class="bp-tab" onclick="showTab('reveal')">Reveal Results</button>
+  </div>
+
+  <div id="tab-guess">
+    <div class="bp-card">
+      <div class="form-row">
+        <div class="form-col">
+          <label>Your name</label>
+          <input type="text" id="g-name" placeholder="e.g. Grandma Sue" />
+        </div>
+        <div class="form-col">
+          <label>Birth date</label>
+          <input type="date" id="g-date" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col">
+          <label>Birth time</label>
+          <input type="time" id="g-time" />
+        </div>
+        <div class="form-col">
+          <label>Baby's gender</label>
+          <select id="g-gender">
+            <option value="">-- select --</option>
+            <option>Girl</option>
+            <option>Boy</option>
+            <option>Surprise!</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col">
+          <label>Weight (lbs)</label>
+          <input type="number" id="g-lbs" placeholder="7" min="4" max="12" step="1" />
+        </div>
+        <div class="form-col">
+          <label>Weight (oz)</label>
+          <input type="number" id="g-oz" placeholder="4" min="0" max="15" step="1" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col">
+          <label>Hair color</label>
+          <select id="g-hair">
+            <option value="">-- select --</option>
+            <option>Bald / none</option>
+            <option>Blonde</option>
+            <option>Brown</option>
+            <option>Black</option>
+            <option>Red</option>
+          </select>
+        </div>
+        <div class="form-col">
+          <label>Eye color</label>
+          <select id="g-eyes">
+            <option value="">-- select --</option>
+            <option>Blue</option>
+            <option>Brown</option>
+            <option>Green</option>
+            <option>Hazel</option>
+            <option>Gray</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-col" style="margin-bottom: 12px;">
+        <label>Length (inches)</label>
+        <input type="number" id="g-length" placeholder="20" min="14" max="26" step="0.5" style="width: 50%;" />
+      </div>
+      <div id="submit-msg" style="font-size: 13px; color: var(--color-text-danger); margin-bottom: 8px; display: none;"></div>
+      <button class="submit-btn" onclick="submitGuess()">Submit my guess</button>
+    </div>
+  </div>
+
+  <div id="tab-entries" style="display:none;">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-count">0</div><div class="stat-label">entries</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-girls">0</div><div class="stat-label">guessing girl</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-boys">0</div><div class="stat-label">guessing boy</div></div>
+    </div>
+    <div class="bp-card" id="entries-list">
+      <div class="empty-state">No entries yet — be the first!</div>
+    </div>
+  </div>
+
+  <div id="tab-reveal" style="display:none;">
+    <div class="bp-card">
+      <p style="font-size: 14px; color: var(--color-text-secondary); margin: 0 0 1rem;">Enter the actual birth details to see who guessed closest!</p>
+      <div class="reveal-grid">
+        <div class="reveal-input-wrap"><label>Actual birth date</label><input type="date" id="r-date" /></div>
+        <div class="reveal-input-wrap"><label>Actual birth time</label><input type="time" id="r-time" /></div>
+        <div class="reveal-input-wrap"><label>Actual weight (lbs)</label><input type="number" id="r-lbs" placeholder="7" min="4" max="12" step="1" /></div>
+        <div class="reveal-input-wrap"><label>Actual weight (oz)</label><input type="number" id="r-oz" placeholder="4" min="0" max="15" step="1" /></div>
+        <div class="reveal-input-wrap"><label>Gender</label>
+          <select id="r-gender"><option value="">--</option><option>Girl</option><option>Boy</option></select></div>
+        <div class="reveal-input-wrap"><label>Length (inches)</label><input type="number" id="r-length" placeholder="20" min="14" max="26" step="0.5" /></div>
+      </div>
+      <button class="reveal-btn" onclick="calcWinner()">Find the winner!</button>
+      <div class="winner-banner" id="winner-banner"></div>
+      <div id="ranked-entries"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'baby_pool_entries_v1';
+let entries = [];
+
+async function loadEntries() {
+  try {
+    const res = await window.storage.get(STORAGE_KEY, true);
+    if (res && res.value) entries = JSON.parse(res.value);
+  } catch(e) { entries = []; }
+  renderEntries();
+}
+
+async function saveEntries() {
+  try { await window.storage.set(STORAGE_KEY, JSON.stringify(entries), true); } catch(e) {}
+}
+
+function showTab(tab) {
+  ['guess','entries','reveal'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none';
+  });
+  document.querySelectorAll('.bp-tab').forEach((el, i) => {
+    el.classList.toggle('active', ['guess','entries','reveal'][i] === tab);
+  });
+  if (tab === 'entries') renderEntries();
+}
+
+function submitGuess() {
+  const name = document.getElementById('g-name').value.trim();
+  const date = document.getElementById('g-date').value;
+  const msg = document.getElementById('submit-msg');
+  if (!name) { msg.textContent = 'Please enter your name.'; msg.style.display = ''; return; }
+  if (!date) { msg.textContent = 'Please enter a birth date guess.'; msg.style.display = ''; return; }
+  msg.style.display = 'none';
+  const entry = {
+    name, date,
+    time: document.getElementById('g-time').value,
+    gender: document.getElementById('g-gender').value,
+    lbs: document.getElementById('g-lbs').value,
+    oz: document.getElementById('g-oz').value,
+    hair: document.getElementById('g-hair').value,
+    eyes: document.getElementById('g-eyes').value,
+    length: document.getElementById('g-length').value,
+    submitted: new Date().toLocaleDateString()
+  };
+  entries.push(entry);
+  saveEntries();
+  ['g-name','g-date','g-time','g-lbs','g-oz','g-length'].forEach(id => document.getElementById(id).value = '');
+  ['g-gender','g-hair','g-eyes'].forEach(id => document.getElementById(id).value = '');
+  msg.style.color = 'var(--color-text-success)';
+  msg.textContent = 'Your guess was submitted! Good luck!';
+  msg.style.display = '';
+  setTimeout(() => { msg.style.display = 'none'; msg.style.color = 'var(--color-text-danger)'; }, 3000);
+}
+
+function renderEntries() {
+  const list = document.getElementById('entries-list');
+  const girls = entries.filter(e => e.gender === 'Girl').length;
+  const boys = entries.filter(e => e.gender === 'Boy').length;
+  document.getElementById('stat-count').textContent = entries.length;
+  document.getElementById('stat-girls').textContent = girls;
+  document.getElementById('stat-boys').textContent = boys;
+  if (!entries.length) { list.innerHTML = '<div class="empty-state">No entries yet — be the first!</div>'; return; }
+  list.innerHTML = entries.map((e, i) => `
+    <div class="entry-item">
+      <div>
+        <div class="entry-name">${e.name}</div>
+        <div class="entry-detail">
+          ${e.date ? `<span class="badge badge-blue">${e.date}</span>` : ''}
+          ${e.time ? `<span class="badge badge-purple">${e.time}</span>` : ''}
+          ${e.gender === 'Girl' ? `<span class="badge badge-pink">Girl</span>` : e.gender === 'Boy' ? `<span class="badge badge-blue">Boy</span>` : e.gender ? `<span class="badge badge-amber">${e.gender}</span>` : ''}
+          ${e.lbs ? `<span class="badge badge-green">${e.lbs} lbs ${e.oz || 0} oz</span>` : ''}
+          ${e.hair ? `<span class="badge badge-amber">${e.hair} hair</span>` : ''}
+          ${e.eyes ? `<span class="badge badge-purple">${e.eyes} eyes</span>` : ''}
+          ${e.length ? `<span class="badge badge-green">${e.length}"</span>` : ''}
+        </div>
+      </div>
+      <div class="entry-date">${e.submitted}</div>
+    </div>
+  `).join('');
+}
+
+function calcWinner() {
+  if (!entries.length) { document.getElementById('winner-banner').style.display = 'block'; document.getElementById('winner-banner').textContent = 'No entries yet!'; return; }
+  const rDate = document.getElementById('r-date').value;
+  const rTime = document.getElementById('r-time').value;
+  const rLbs = parseFloat(document.getElementById('r-lbs').value) || 0;
+  const rOz = parseFloat(document.getElementById('r-oz').value) || 0;
+  const rGender = document.getElementById('r-gender').value;
+  const rLength = parseFloat(document.getElementById('r-length').value) || 0;
+  const rTotalOz = rLbs * 16 + rOz;
+  const rDateMs = rDate ? new Date(rDate).getTime() : null;
+  const scored = entries.map(e => {
+    let score = 0, pts = [];
+    if (rDateMs && e.date) {
+      const diff = Math.abs(new Date(e.date).getTime() - rDateMs) / 86400000;
+      const p = Math.max(0, 30 - Math.floor(diff));
+      score += p; pts.push(`Date: ${p}pts`);
+    }
+    if (rGender && e.gender) {
+      const p = e.gender === rGender ? 20 : 0;
+      score += p; if(p) pts.push(`Gender: ${p}pts`);
+    }
+    if (rTotalOz && e.lbs) {
+      const eTotalOz = parseFloat(e.lbs) * 16 + (parseFloat(e.oz) || 0);
+      const diff = Math.abs(eTotalOz - rTotalOz);
+      const p = Math.max(0, 20 - Math.floor(diff * 2));
+      score += p; pts.push(`Weight: ${p}pts`);
+    }
+    if (rTime && e.time) {
+      const toMins = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
+      const diff = Math.abs(toMins(e.time) - toMins(rTime));
+      const p = Math.max(0, 15 - Math.floor(diff / 10));
+      score += p; pts.push(`Time: ${p}pts`);
+    }
+    if (rLength && e.length) {
+      const diff = Math.abs(parseFloat(e.length) - rLength);
+      const p = Math.max(0, 15 - Math.floor(diff * 3));
+      score += p; pts.push(`Length: ${p}pts`);
+    }
+    return { ...e, score, pts };
+  }).sort((a, b) => b.score - a.score);
+
+  const banner = document.getElementById('winner-banner');
+  banner.style.display = 'block';
+  banner.textContent = `Winner: ${scored[0].name} with ${scored[0].score} points!`;
+
+  document.getElementById('ranked-entries').innerHTML = `
+    <div style="margin-top: 1rem;">
+      <div style="font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 8px;">Full rankings</div>
+      ${scored.map((e, i) => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 14px;">
+          <span style="color: var(--color-text-secondary);">#${i+1}</span>
+          <span style="flex: 1; margin: 0 12px; font-weight: ${i===0?'500':'400'}; color: var(--color-text-primary);">${e.name}</span>
+          <span style="color: var(--color-text-secondary); font-size: 12px; margin-right: 8px;">${e.pts.join(' · ')}</span>
+          <span style="font-weight: 500; color: ${i===0 ? 'var(--color-text-success)' : 'var(--color-text-primary)'};">${e.score}pts</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+loadEntries();
+</script>
